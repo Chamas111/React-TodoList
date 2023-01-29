@@ -1,50 +1,38 @@
 import "./App.css";
-import { useState } from "react";
-import TodoInput from "./TodoInput";
+import { useState, useEffect } from "react";
+
 import { v4 as uuid } from "uuid";
+import Todoform from "./Todoform";
 
 import TodoList from "./TodoList";
 
 function App() {
-  const [items, setItems] = useState([]);
-  const [title, setTitle] = useState("");
+  const storeItem = JSON.parse(localStorage.getItem("todos")) || [];
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    setItems({ items: e.target.value });
-    console.log(e.target.value);
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newItem = { id: uuid(), title };
-    setItems([...items, newItem]);
-    console.log("hello handleSubmit");
-    console.log(newItem);
-  };
+  const [input, setInput] = useState("");
+  const [todos, setTodos] = useState([]);
+  const [editTodo, setEditTodo] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
   const clearList = () => {
     console.log("hello clearList");
   };
-  const handleEdit = (id) => {
-    console.log(`hello handleEdit ${id}`);
-  };
-  const handleDelete = (id) => {
-    console.log(`hello handleDelete ${id}`);
-  };
 
   return (
-    <div className="container">
-      <TodoInput
-        item={items.task}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
+    <div className="container mt-3">
+      <Todoform
+        input={input}
+        setInput={setInput}
+        todos={todos}
+        setTodos={setTodos}
+        editTodo={editTodo}
+        setEditTodo={setEditTodo}
       />
 
-      <TodoList
-        items={items.task}
-        clearList={clearList}
-        handleEdit={handleEdit}
-        handleDelete={handleDelete}
-      />
+      <TodoList todos={todos} setTodos={setTodos} setEditTodo={setEditTodo} />
     </div>
   );
 }
