@@ -1,14 +1,38 @@
 import "./App.css";
-import TodoInput from "./TodoInput";
-import TodoItem from "./TodoItem";
+import { useState, useEffect } from "react";
+
+import { v4 as uuid } from "uuid";
+import Todoform from "./Todoform";
+
 import TodoList from "./TodoList";
 
 function App() {
-  return (
-    <div className="container">
-      <TodoInput />
+  const storeItem = JSON.parse(localStorage.getItem("todos")) || [];
 
-      <TodoList />
+  const [input, setInput] = useState("");
+  const [todos, setTodos] = useState([]);
+  const [editTodo, setEditTodo] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
+  const clearList = () => {
+    console.log("hello clearList");
+  };
+
+  return (
+    <div className="container mt-3">
+      <Todoform
+        input={input}
+        setInput={setInput}
+        todos={todos}
+        setTodos={setTodos}
+        editTodo={editTodo}
+        setEditTodo={setEditTodo}
+      />
+
+      <TodoList todos={todos} setTodos={setTodos} setEditTodo={setEditTodo} />
     </div>
   );
 }
