@@ -7,10 +7,10 @@ import Todoform from "./Todoform";
 import TodoList from "./TodoList";
 
 function App() {
-  const storeItem = JSON.parse(localStorage.getItem("todos")) || [];
+  const storeItems = JSON.parse(localStorage.getItem("todos")) || [];
 
   const [input, setInput] = useState("");
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(storeItems);
   const [editTodo, setEditTodo] = useState(null);
 
   useEffect(() => {
